@@ -18,3 +18,5 @@ powershell 관리자권한 설정 필요
 5. 다시 get-... 하여 변경된 권한 확인
 
 
+# react 실행 
+yarn start
