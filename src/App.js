@@ -4,7 +4,8 @@ import MyName from './MyName';
 class App extends Component{
   render() {
     return(
-      <MyName name="jju"></MyName>
+      // <MyName name="jju"></MyName>
+      <MyName></MyName>
     )
   }
 }
