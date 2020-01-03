@@ -28,6 +28,14 @@ class App extends Component{
       information: information.concat({id:this.id++, ...data})
     })
   }
+
+  handelRemove = (id) => {
+    const {information} = this.state;
+    this.setState({
+      information: information.filter(info => info.id !== id)
+    })
+  }
+
   render() {
     const {information} = this.state;
     return(
@@ -38,7 +46,10 @@ class App extends Component{
         <div>============</div>
         <PhoneForm onCreate={this.handleCreate}></PhoneForm>
         {JSON.stringify(information)}
-        <PhoneInfoList data={this.state.information}></PhoneInfoList>
+        <PhoneInfoList 
+          data={information}
+          onRemove={this.handelRemove}
+        ></PhoneInfoList>
       </Fragment>
     )
   }
