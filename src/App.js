@@ -19,8 +19,16 @@ class App extends Component{
         name:'jae',
         phone:'111-1111-1111'
       }
-    ]
+    ],
+    keyword: ''
   }
+
+  handleChange = (e) => {
+    this.setState({
+      keyword: e.target.value
+    })
+  }
+
   handleCreate = (data) => {
     const {information} = this.state;
     this.setState({
@@ -48,7 +56,10 @@ class App extends Component{
   }
 
   render() {
-    const {information} = this.state;
+    const {information, keyword} = this.state;
+    const filteredList = information.filter(
+      info => info.name.indexOf(keyword) !== -1
+    );
     return(
       <Fragment>
         <MyName name={this.state.info}></MyName>
@@ -56,9 +67,17 @@ class App extends Component{
         <Counter></Counter>
         <div>============</div>
         <PhoneForm onCreate={this.handleCreate}></PhoneForm>
+        <p>
+          <input placeholder = "검색할 이름?"
+
+          onChange={this.handleChange}
+          value ={keyword}
+          />
+        </p>
+        <hr/>
         {JSON.stringify(information)}
         <PhoneInfoList 
-          data={information}
+          data={filteredList}
           onRemove={this.handelRemove}
           onUpdate={this.handelUpdate}
         ></PhoneInfoList>
