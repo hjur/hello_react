@@ -36,6 +36,17 @@ class App extends Component{
     })
   }
 
+  handelUpdate = (id, data) => {
+    const {information} = this.state;
+    this.setState({
+      information: information.map(
+        info => info.id === id
+        ? {...info, ...data}//새 객체를 만들어서 기존의 값과 전달받은 data 덮어씀
+        : info
+        )
+    })
+  }
+
   render() {
     const {information} = this.state;
     return(
@@ -49,6 +60,7 @@ class App extends Component{
         <PhoneInfoList 
           data={information}
           onRemove={this.handelRemove}
+          onUpdate={this.handelUpdate}
         ></PhoneInfoList>
       </Fragment>
     )

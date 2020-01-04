@@ -9,10 +9,51 @@ class PhoneInfo extends Component{
         }
     }
 
+    state ={
+        editing: false,
+        name:'',
+        phone:'',
+    }
+
     handleRemove = () => {
         // onRemove에 id 넣어서 호출
         const {info, onRemove} = this.props;
         onRemove(info.id);
+    }
+    
+    handleToggleEdit = () => {
+        const {editing} = this.state;
+        this.setState({
+            editing: !editing
+        });
+    }
+
+    handleChange =(e)=>{
+        const { name, value} = e.target;
+        this.setState({
+            [name]: value
+        })
+    }
+
+    componentDidUpdate(prevProps, prevState){
+        //editind 값이 바뀔 때 처리 할 로직
+        //수정 눌렀을땐, 기존의 값이 input
+        //수정을 적용할 땐, input 의 값들을 부모한테 전달
+
+        const {info, onUpdate} = this.props;
+        if(!prevState.editing && this.state.editing){
+            this.setState({
+                name: info.name,
+                phone: info.phone
+            })
+        }
+        if(prevState.editing && !this.state.editing){
+            alert("들어옴?")
+            onUpdate(info.id,{
+                name: this.state.name,
+                phone: this.state.phone
+            });
+        }
     }
 
     render(){
@@ -22,16 +63,47 @@ class PhoneInfo extends Component{
             margin: '8px'
         };
 
-        const {
-            name,phone
-        } = this.props.info;
-        return(
-            <div style={style}>
-                <div><b>{name}</b></div>
-                <div>{phone}</div>
+        const {editing} = this.state;
+
+        if (editing) { // 수정모드
+            return (
+              <div style={style}>
+                <div>
+                  <input
+                    value={this.state.name}
+                    name="name"
+                    placeholder="이름"
+                    onChange={this.handleChange}
+                  />
+                </div>
+                <div>
+                  <input
+                    value={this.state.phone}
+                    name="phone"
+                    placeholder="전화번호"
+                    onChange={this.handleChange}
+                  />
+                </div>
+                <button onClick={this.handleToggleEdit}>적용</button>
                 <button onClick={this.handleRemove}>삭제</button>
+              </div>
+            );
+          }
+      
+      
+          // 일반모드
+          const {
+            name, phone
+          } = this.props.info;
+          
+          return (
+            <div style={style}>
+              <div><b>{name}</b></div>
+              <div>{phone}</div>
+              <button onClick={this.handleToggleEdit}>수정</button>
+              <button onClick={this.handleRemove}>삭제</button>
             </div>
-        )
+          );
     }
 }
 
